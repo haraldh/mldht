@@ -994,6 +994,10 @@ public class DHT implements DHTBase {
 			CompletableFuture<RPCCall> f = new CompletableFuture<>();
 			
 			RPCServer srv = serverManager.getRandomActiveServer(true);
+
+			if (srv == null)
+				continue;
+
 			c.addListener(new RPCCallListener() {
 				@Override
 				public void stateTransition(RPCCall c, RPCState previous, RPCState current) {
