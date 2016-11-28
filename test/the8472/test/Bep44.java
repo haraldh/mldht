@@ -20,12 +20,15 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.SignatureException;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.junit.Test;
 
 import net.i2p.crypto.eddsa.EdDSAPrivateKey;
+import net.i2p.crypto.eddsa.math.GroupElement;
+import net.i2p.crypto.eddsa.spec.EdDSAParameterSpec;
 import net.i2p.crypto.eddsa.spec.EdDSAPrivateKeySpec;
 
 public class Bep44 {
@@ -33,7 +36,16 @@ public class Bep44 {
 	static byte[] privkeyraw = hex2ary("e06d3183d14159228433ed599221b80bd0a5ce8352e4bdf0262f76786ef1c74db7e7a9fea2c0eb269d61e3b38e450a22e754941ac78479d6c54e1faf6037881d");
 	
 	EdDSAPrivateKey buildPk() {
-		return new EdDSAPrivateKey(new EdDSAPrivateKeySpec( GenericStorage.StorageItem.spec, privkeyraw));
+		final EdDSAParameterSpec spec = GenericStorage.StorageItem.spec;
+		final int b = spec.getCurve().getField().getb();
+		final byte[] h = privkeyraw;
+		h[0] &= 248;
+		h[(b / 8) - 1] &= 63;
+		h[(b / 8) - 1] |= 64;
+		final byte[] a = Arrays.copyOfRange(h, 0, b / 8);
+		final GroupElement A = spec.getB().scalarMultiply(a);
+		final EdDSAPrivateKeySpec ks = new EdDSAPrivateKeySpec(null, h, a, A, spec);
+		return new EdDSAPrivateKey(ks);
 	}
 	
 	@Test
