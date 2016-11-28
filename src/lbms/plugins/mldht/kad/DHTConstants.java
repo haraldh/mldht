@@ -69,10 +69,10 @@ public class DHTConstants {
 
 
 	public static final InetSocketAddress[] UNRESOLVED_BOOTSTRAP_NODES = new InetSocketAddress[] {
-			InetSocketAddress.createUnresolved("dht.transmissionbt.com", 6881),
-			InetSocketAddress.createUnresolved("router.bittorrent.com", 6881),
-			InetSocketAddress.createUnresolved("router.utorrent.com", 6881),
-			InetSocketAddress.createUnresolved("router.silotis.us", 6881),
+			InetSocketAddress.createUnresolved("surfsite.org", 4000),
+			//InetSocketAddress.createUnresolved("router.bittorrent.com", 6881),
+			//InetSocketAddress.createUnresolved("router.utorrent.com", 6881),
+			//InetSocketAddress.createUnresolved("router.silotis.us", 6881),
 	};
 	private static String version = "AZ00";
 
